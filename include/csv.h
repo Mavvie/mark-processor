@@ -18,10 +18,10 @@ public:
   CSV();
   CSV(const char* lpFn);
   ~CSV();
-  bool read(const char* lpFn);
+  virtual bool read(const char* lpFn);
   const char* file_path();
   vector<vector<char*>*>* rows();
-private:
   char* _file_path;
   vector<vector<char*>*> _rows;
+private:
 };

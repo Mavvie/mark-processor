@@ -1,28 +1,32 @@
-#include "../include/csv.h"
+#include "../include/harrizcsv.h"
 
 using namespace std;
 
 int main() {
-  CSV* csv = new CSV();
+  HarrizCSV* csv = new HarrizCSV();
   csv->read("data/SCHS21-1.csv");
 
   vector<vector<char*>*>* prows = csv->rows();
 
   int rows = prows->size();
+  // cout << "Rows: " << rows << endl;
 
-  for(int row = 0; row < rows; row++)
-  {
-    vector<char*>* columns = prows->at(row);
-    if(columns->size() > 0)
-    {
-      if(strcmp(columns->at(0), "Type") == 0)
-        break;
-    }
-    cout << columns->at(0) << endl;
-    prows->erase(prows->begin());
-  }
+  // for(int row = 0; row < rows;)
+  // {
+  //   vector<char*>* columns = prows->at(row);
+  //   if(columns->size() > 0)
+  //   {
+  //     if(strcmp(columns->at(0), "Type") == 0)
+  //     {
+  //       break;
+  //     }
+  //   }
+  //   prows->erase(prows->begin());
+  // }
 
-  cout << "Printing how it's arranged in memory: \n\n";
+
+
+  // cout << "Printing how it's arranged in memory: \n\n";
 
   rows = prows->size();
   cout << "Rows: " << rows << endl;
@@ -52,6 +56,14 @@ int main() {
         cout << ";";
     }
     cout << endl;
+  }
+
+  cout << "\n\nHeaders found: \n\n";
+  vector<char*> *headers = csv->headers();
+  for(int i = 0; i < headers->size(); i++)
+  {
+    cout << headers->at(i) << " : ";
+    cout << prows->at(0)->at(i) << endl;
   }
 
   return 0;

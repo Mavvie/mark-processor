@@ -20,7 +20,6 @@ bool CSV::read(const char* lpFn)
   char line_buffer[MAX_ROW_LENGTH] = "";
 
   file.getline(line_buffer, MAX_ROW_LENGTH);
-  cout << "Raw CSV line: " << line_buffer << endl;
 
   while(!file.eof())
   {
