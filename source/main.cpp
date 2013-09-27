@@ -1,32 +1,17 @@
 #include "../include/harrizcsv.h"
+#include "../include/mark.h"
+#include "../include/student.h"
 
 using namespace std;
 
 int main() {
   HarrizCSV* csv = new HarrizCSV();
   csv->read("data/SCHS21-1.csv");
+  vector<Student*> students;
 
   vector<vector<char*>*>* prows = csv->rows();
 
   int rows = prows->size();
-  // cout << "Rows: " << rows << endl;
-
-  // for(int row = 0; row < rows;)
-  // {
-  //   vector<char*>* columns = prows->at(row);
-  //   if(columns->size() > 0)
-  //   {
-  //     if(strcmp(columns->at(0), "Type") == 0)
-  //     {
-  //       break;
-  //     }
-  //   }
-  //   prows->erase(prows->begin());
-  // }
-
-
-
-  // cout << "Printing how it's arranged in memory: \n\n";
 
   rows = prows->size();
   cout << "Rows: " << rows << endl;
@@ -46,25 +31,72 @@ int main() {
     return 2;
   }
 
-  for(int row = 0; row < rows; row++)
+  // PRINT ALL DATA IN MEMORY
+  // for(int row = 0; row < rows; row++)
+  // {
+  //   vector<char*>* columns = prows->at(row);
+  //   for(int column = 0; column < columns->size(); column++)
+  //   {
+  //     cout << columns->at(column);
+  //     if(column + 1 < columns->size())
+  //       cout << ";";
+  //   }
+  //   cout << endl;
+  // }
+
+  cout << "\n\nHeaders found:\n\n";
+  vector<char*> *headers = csv->headers();
+  for(int row = 0; row < prows->size(); row++)
   {
+    Student *new_student = new Student;
     vector<char*>* columns = prows->at(row);
-    for(int column = 0; column < columns->size(); column++)
+    new_student->Type = new char[20];
+    strcpy(new_student->Type, columns->at(0));
+    new_student->a = new char[20];
+    strcpy(new_student->a, columns->at(1));
+    for(int col = 2; col < columns->size(); col++)
     {
-      cout << columns->at(column);
-      if(column + 1 < columns->size())
-        cout << ";";
+      if(strcmp(headers->at(col), "O.A") == 0)
+      {
+        new_student->OAs.push_back(Mark(columns->at(col)));
+      }
     }
-    cout << endl;
+    students.push_back(new_student);
   }
 
-  cout << "\n\nHeaders found: \n\n";
-  vector<char*> *headers = csv->headers();
-  for(int i = 0; i < headers->size(); i++)
+  for(int i=0; i<students.size(); i++)
   {
-    cout << headers->at(i) << " : ";
-    cout << prows->at(0)->at(i) << endl;
+    Student* student = students.at(i);
+    float sum = 0.0f;
+    cout << "Student # " << i << endl;
+    for(int ioa = 0; ioa < student->OAs.size(); ioa++)
+    {
+      sum += student->OAs.at(ioa).to_int();
+      cout << "O.A: " << student->OAs.at(ioa).to_int() << endl;
+    }
+    float average = sum / float(student->OAs.size());
+    cout << "Average mark: " << average << endl << endl << endl;
   }
+
+  ofstream outfile("output.csv");
+
+  outfile << endl << endl;
+
+  for(int i=0; i<students.size(); i++)
+  {
+    Student* student = students.at(i);
+    float sum = 0.0f;
+    outfile << student->Type << ";" << student->a;
+    for(int ioa = 0; ioa < student->OAs.size(); ioa++)
+    {
+      sum += student->OAs.at(ioa).to_int();
+      outfile << ";" << student->OAs.at(ioa).to_string();
+    }
+    float average = sum / float(student->OAs.size());
+    outfile << ";" << average << endl;
+  }
+
+  outfile.close();
 
   return 0;
 }
