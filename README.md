@@ -10,6 +10,8 @@ The first 2 columns are the student's last and first name.
 Any following columns will be ignored unless their header is "O.A"
 A CSV with the following headers:
 
+Input
+--------------
 <table>
   <tr>
     <th>Header:</th>
@@ -30,7 +32,7 @@ A CSV with the following headers:
 </table>
 
 Output:
-
+-----------------
 <table>
   <tr>
     <th>Last Name</th>
