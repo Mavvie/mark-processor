@@ -12,40 +12,10 @@ int main() {
   vector<vector<char*>*>* prows = csv->rows();
 
   int rows = prows->size();
-
-  rows = prows->size();
-  cout << "Rows: " << rows << endl;
-
-  if(rows == 0)
-  {
-    cout << "No rows found in CSV file...aborting" << endl;
-    return 1;
-  }
-
   int columns = prows->at(0)->size();
-  cout << "Columns: " << columns << endl;
 
-  if(columns == 0)
-  {
-    cout << "No columns found in CSV file...aborting" << endl;
-    return 2;
-  }
-
-  // PRINT ALL DATA IN MEMORY
-  // for(int row = 0; row < rows; row++)
-  // {
-  //   vector<char*>* columns = prows->at(row);
-  //   for(int column = 0; column < columns->size(); column++)
-  //   {
-  //     cout << columns->at(column);
-  //     if(column + 1 < columns->size())
-  //       cout << ";";
-  //   }
-  //   cout << endl;
-  // }
-
-  cout << "\n\nHeaders found:\n\n";
   vector<char*> *headers = csv->headers();
+
   for(int row = 0; row < prows->size(); row++)
   {
     Student *new_student = new Student;
@@ -60,6 +30,14 @@ int main() {
       {
         new_student->OAs.push_back(Mark(columns->at(col)));
       }
+      else if(strncmp(headers->at(col), "E", 1) == 0)
+      {
+        new_student->Exams.push_back(Mark(columns->at(col)));
+      }
+      else if(strncmp(headers->at(col), "S", 1) == 0)
+      {
+        new_student->Summatives.push_back(Mark(columns->at(col)));
+      }
     }
     students.push_back(new_student);
   }
@@ -67,15 +45,27 @@ int main() {
   for(int i=0; i<students.size(); i++)
   {
     Student* student = students.at(i);
-    float sum = 0.0f;
+    // float sum = 0.0f;
     cout << "Student # " << i << endl;
     for(int ioa = 0; ioa < student->OAs.size(); ioa++)
     {
-      sum += student->OAs.at(ioa).to_int();
+      // sum += student->OAs.at(ioa).to_int();
       cout << "O.A: " << student->OAs.at(ioa).to_int() << endl;
     }
-    float average = sum / float(student->OAs.size());
-    cout << "Average mark: " << average << endl << endl << endl;
+    for(int ie = 0; ie < student->Exams.size(); ie++)
+    {
+      int exmark = student->Exams.at(ie).to_int();
+      if(exmark < 0)
+        cout << "Exam: Absent" << endl;
+      else
+        cout << "Exam: " << exmark << endl;
+    }
+    for(int is = 0; is < student->Summatives.size(); is++)
+    {
+      cout << "Summative: " << student->Summatives.at(is).to_int() << endl;
+    }
+    // float average = sum / float(student->OAs.size());
+    cout << "First 3 terms mark: " << student->term_mark(3).to_int() << endl << endl << endl;
   }
 
   ofstream outfile("output.csv");
