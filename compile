@@ -1,1 +1,1 @@
-g++ source/* -o mark
+g++ source/* -o mark -w

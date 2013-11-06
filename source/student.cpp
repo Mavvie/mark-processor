@@ -12,7 +12,12 @@ Mark Student::final_mark()
 
 Mark Student::final_mark(int units)
 {
+  float term_mark = this->term_mark(units).to_int();
+  float exam_mark = this->exam_mark().to_int();
+  float summative_mark = this->summative_mark().to_int();
 
+  float final = term_mark * 0.7f + exam_mark * 0.2f + summative_mark * 0.1f;
+  return Mark(int(final + 0.5f));
 }
 
 Mark Student::term_mark()
