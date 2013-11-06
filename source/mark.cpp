@@ -2,6 +2,14 @@
 
 int str_to_int(char* str)
 {
+  if(str[0] == '-'){
+    strcpy(str, str+1);
+    strcat(str, "-");
+  }
+  if(str[0] == '+'){
+    strcpy(str, str+1);
+    strcat(str, "+");
+  }
   switch(str[0])
   {
     case 'R':

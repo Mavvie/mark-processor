@@ -1,12 +1,13 @@
 #include "../include/harrizcsv.h"
 #include "../include/mark.h"
 #include "../include/student.h"
-#include "../include/resource.h"
+#include <unistd.h>
 
 using namespace std;
 
 int main(int argc, char **argv)
 {
+  cout << getcwd(0,0) << endl;
   char *lpFn = new char[1024];
   char *only = new char[256];
   char *exclude = new char[256];
@@ -14,10 +15,12 @@ int main(int argc, char **argv)
 
   strcpy(lpFn, "data/SCHS21-1.csv");
   strcpy(outputFn, "data/output.csv");
+  strcpy(only, "");
+  strcpy(exclude, "");
 
   int n_terms = 0;
   char c;
-  while((c = getopt(argc, argv, ":f:n:e:i")) != -1)
+  while((c = getopt(argc, argv, ":f:n:e:i:o")) != -1)
   {
     switch(c)
     {
@@ -32,6 +35,9 @@ int main(int argc, char **argv)
         break;
       case 'i':
         strncpy(only, optarg, 256);
+        break;
+      case 'o':
+        strncpy(outputFn, optarg, 256);
         break;
       case '?':
         if(optopt == 'f' || optopt == 'n' || optopt == 'e' || optopt == 'i')
@@ -70,7 +76,7 @@ int main(int argc, char **argv)
     strcpy(new_student->a, columns->at(1));
     for(int col = 2; col < columns->size(); col++)
     {
-      if(strcmp(headers->at(col), "O.A") == 0)
+      if(strncmp(headers->at(col), "O.A", 3) == 0)
       {
         new_student->OAs.push_back(Mark(columns->at(col)));
       }
@@ -154,8 +160,13 @@ int main(int argc, char **argv)
         outfile << student->OAs.at(iterm).to_int() << ";";
       for(int isum = 0; isum < n_summatives; isum++)
         outfile << student->Summatives.at(isum).to_int() << ";";
-      for(int iex = 0; iex < n_exams; iex++)
-        outfile << student->Exams.at(iex).to_int() << ";";
+      for(int iex = 0; iex < n_exams; iex++) {
+        int exmark = student->Exams.at(iex).to_int();
+        if(exmark == -1000000)
+          outfile << "A" << ";";
+        else
+          outfile << exmark << ";";
+      }
       outfile << ";;" << student->term_mark(n_terms).to_int() << ";";
       outfile << student->final_mark(n_terms).to_int();
       outfile << endl;
@@ -182,8 +193,13 @@ int main(int argc, char **argv)
         outfile << student->OAs.at(iterm).to_int() << ";";
       for(int isum = 0; isum < n_summatives; isum++)
         outfile << student->Summatives.at(isum).to_int() << ";";
-      for(int iex = 0; iex < n_exams; iex++)
-        outfile << student->Exams.at(iex).to_int() << ";";
+      for(int iex = 0; iex < n_exams; iex++) {
+        int exmark = student->Exams.at(iex).to_int();
+        if(exmark == -1000000)
+          outfile << "A" << ";";
+        else
+          outfile << exmark << ";";
+      }
       outfile << ";;" << student->term_mark(n_terms).to_int() << ";";
       outfile << student->final_mark(n_terms).to_int();
       outfile << endl;

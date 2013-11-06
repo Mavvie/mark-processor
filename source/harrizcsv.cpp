@@ -3,10 +3,17 @@
 bool HarrizCSV::read(const char* lpFn)
 {
   strcpy(_file_path, lpFn);
-  cout << "Reading file (harriz): \"" << _file_path << "\"" << endl; 
+  cout << "Reading file (harriz): \"" << _file_path << "\"" << endl;
   ifstream file;
   file.open(_file_path);
   char line_buffer[MAX_ROW_LENGTH] = "";
+
+  if(!file.good() || file.eof()){
+    cout <<"BAD FILE!!!!!!" << endl;
+    return false;
+  }
+  else
+    cout << "Good file." << endl;
 
   file.getline(line_buffer, MAX_ROW_LENGTH);
 
@@ -14,7 +21,7 @@ bool HarrizCSV::read(const char* lpFn)
 
   while(!file.eof() && file.good())
   {
-    if(strcmp(line_buffer, "Type") >= 4 && start_reading == false)
+    if(strncmp(line_buffer, "Type", 4) == 0 && start_reading == false)
     {
       // Initialize headers and tell to start reading
       char* pch = strtok(line_buffer, ";");
