@@ -6,6 +6,16 @@ This is a mark processor library and CSV parser library bundled together. It's d
 Usage
 ==============
 
+Run the executable as follows:
+
+##mark-processor.exe [-f filename] [-n nunits] [-e exclude] [-i restrict] [-o output]##
+
+filename: The path to the input CSV file
+nunits: The number of units to include while marking
+exclude: The name of any student(s) that you want to exclude from the output. For example, -e tyler would exclude any student whose name that has "tyler" in it.
+restrict: The opposite of exclude...only students whose names match restrict are output. Meaning, -i tyler would exclude every student whose name <b>doesn't</b> have "tyler" in it.
+output: The path to the output CSV file (doesn't have to exist, but will overwrite if it does).
+
 The first 2 columns are the student's last and first name.
 Any following columns will be ignored unless their header is "O.A"
 A CSV with the following headers:
