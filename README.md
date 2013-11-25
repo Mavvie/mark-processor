@@ -8,7 +8,7 @@ Usage
 
 Run the executable as follows:
 
-#mark-processor.exe [-f filename] [-n nunits] [-e exclude] [-i restrict] [-o output]#
+<b>mark-processor.exe [-f filename] [-n nunits] [-e exclude] [-i restrict] [-o output]</b>
 
 filename: The path to the input CSV file
 nunits: The number of units to include while marking
